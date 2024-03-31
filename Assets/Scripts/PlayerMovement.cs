@@ -87,6 +87,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        Quaternion rotation = Quaternion.LookRotation(
+            transform.position - pointerGraphics2.transform.GetChild(1).position,
+            pointerGraphics2.transform.GetChild(1).TransformDirection(Vector3.up)
+        );
+        pointerGraphics2.transform.GetChild(1).rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+
         if (willCountScore)
         {
             myText.score = score;
@@ -115,6 +121,9 @@ public class PlayerMovement : MonoBehaviour
                     shatterPart.transform.position = new Vector3(shatterPart.transform.position.x + Random.Range(-1f, 1f), shatterPart.transform.position.y + Random.Range(-1f, 1f));
                     shatterPart.transform.localEulerAngles = new Vector3(0, 0, Random.Range(0, 360));
                     shatterPart.transform.localScale = new Vector3(Random.Range(0.05f, 5), Random.Range(0.05f, 5), 1);
+
+                    shatterPart.GetComponent<Rigidbody2D>().velocity = shatterPart.transform.right * Random.Range(1, 20);
+             
                 }
 
                 score += 1;
@@ -134,6 +143,9 @@ public class PlayerMovement : MonoBehaviour
             pointerGraphics3.transform.localScale = new Vector3(Random.Range(1, 7f), Random.Range(1, 7f), Random.Range(1, 7f));
             pointerGraphicsPrimary.SetActive(false);
 
+            pointerGraphics2.transform.GetChild(1).GetComponent<SpriteRenderer>().color = Random.ColorHSV();
+            pointerGraphics2.transform.GetChild(1).localScale = new Vector3(Random.Range(55, 55f), Random.Range(5, 20f), Random.Range(1, 1f));
+
 
             pointerGraphics.SetActive(true);
             pointerGraphics2.SetActive(true);
@@ -149,6 +161,7 @@ public class PlayerMovement : MonoBehaviour
             pointerGraphics2.transform.localEulerAngles = new Vector3(0, 0, Random.Range(0, 360));
             pointerGraphics3.transform.localEulerAngles = new Vector3(0, 0, Random.Range(0, 360));
 
+            
 
         }
     }
@@ -232,7 +245,9 @@ public class PlayerMovement : MonoBehaviour
         pointerGraphics.transform.localScale = Vector3.Lerp(pointerGraphics.transform.localScale, new Vector3(1, 1, 1), 0.25f);
         pointerGraphics2.transform.localScale = Vector3.Lerp(pointerGraphics.transform.localScale, new Vector3(1, 1, 1), 0.25f);
         pointerGraphics3.transform.localScale = Vector3.Lerp(pointerGraphics.transform.localScale, new Vector3(1, 1, 1), 0.25f);
-        
+        pointerGraphics2.transform.GetChild(1).GetComponent<SpriteRenderer>().color = Random.ColorHSV();
+        pointerGraphics2.transform.GetChild(1).localScale = Vector3.Lerp(pointerGraphics2.transform.GetChild(1).localScale, new Vector3(55, 0, 1), 0.25f);
+
 
         if (pointerGraphics.transform.localScale.x < 1.25f)
         {
